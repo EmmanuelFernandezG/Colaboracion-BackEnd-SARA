@@ -125,7 +125,7 @@ public class service {
 	    directosRepository.deleteAllInBatch();
 	    List<directos> listaDirectos = new ArrayList<>();
 
-	    for (int i = 3; i <= sheet.getLastRowNum(); i++) {
+	    for (int i = 2; i <= sheet.getLastRowNum(); i++) {
 	        Row fila = sheet.getRow(i);
 	        if (fila == null || getCellValue(fila.getCell(0)).isEmpty()) break;
 
@@ -152,13 +152,13 @@ public class service {
 	        d.setPo_days(getInt(fila.getCell(16)));
 	        d.setSs_days(getInt(fila.getCell(17)));
 	        d.setIda(getInt(fila.getCell(18)));
-	        d.setOver_stock(getFloat(fila.getCell(19)));
-	        d.setAlt_vendor(getCellValue(fila.getCell(20)));
-	        d.setContenedor(getCellValue(fila.getCell(21)));
-	        d.setFactura(getCellValue(fila.getCell(22)));
-	        d.setSar2(getCellValue(fila.getCell(23)));
-	        d.setDirecto(getCellValue(fila.getCell(24)));
-	        d.setPod(getCellValue(fila.getCell(25)));
+	        d.setOver_stock(getFloat(fila.getCell(20)));
+	        d.setAlt_vendor(getCellValue(fila.getCell(21)));
+	        d.setContenedor(getCellValue(fila.getCell(22)));
+	        d.setFactura(getCellValue(fila.getCell(23)));
+	        d.setSar2(getCellValue(fila.getCell(24)));
+	        d.setDirecto(getCellValue(fila.getCell(25)));
+	        d.setPod(getCellValue(fila.getCell(26)));
 
 	        listaDirectos.add(d);
 

@@ -2,6 +2,7 @@ package com.example.actualizarBases;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,14 @@ import com.example.actualizarBases.Modelo.contactos;
 import com.example.actualizarBases.Modelo.directos;
 import com.example.actualizarBases.Modelo.listaProveedores;
 import com.example.actualizarBases.Modelo.pool;
+import com.example.actualizarBases.Modelo.precios;
 import com.example.actualizarBases.Modelo.wksh;
 import com.example.actualizarBases.Modelo.Repositorio.codigosRepository;
 import com.example.actualizarBases.Modelo.Repositorio.contactosRepository;
 import com.example.actualizarBases.Modelo.Repositorio.directosRepository;
 import com.example.actualizarBases.Modelo.Repositorio.listaProveedoresRepository;
 import com.example.actualizarBases.Modelo.Repositorio.poolRepository;
+import com.example.actualizarBases.Modelo.Repositorio.preciosRepository;
 import com.example.actualizarBases.Modelo.Repositorio.wkshRepository;
 
 import jakarta.transaction.Transactional;
@@ -47,6 +50,8 @@ public class service {
 	private wkshRepository wkshRepository;
 	@Autowired
 	private codigosRepository codigosRepository;
+	@Autowired
+	private preciosRepository preciosRepository;
 	
 	
 	@Transactional 
@@ -182,7 +187,6 @@ public class service {
 	    
 	    poolRepository.deleteAllInBatch();
 	    List<pool> listaPool = new ArrayList<>();
-	    String fecha10000 = LocalDate.now().plusDays(10000).toString();
 	    
 	    for (int i = 3; i <= sheet.getLastRowNum(); i++) {
 	        Row fila = sheet.getRow(i);
@@ -373,6 +377,62 @@ public class service {
                 codigosRepository.saveAll(listaCodigos);
             }
 		}
+	}
+	
+	
+	@Transactional
+	public void actualizarPrecios() throws Exception {
+	    IOUtils.setByteArrayMaxOverride(200_000_000);
+	    preciosRepository.deleteAllInBatch();
+	    String[] nombresBase = {"Lista de precios ", "Lista de precios Refacciones "};
+	    for (int listado = 0; listado < nombresBase.length; listado++) {
+	        String nom = nombresBase[listado];
+	        File archivo = null;
+	        for (int d = 0; d < 10; d++) {
+	            String fecha = java.time.LocalDate.now().minusDays(d).format(java.time.format.DateTimeFormatter.ofPattern("ddMMyyyy"));
+	            String rutaCompleta = "\\\\Isilon2truperdata\\Importaciones\\SAP\\" + nom + fecha + ".xlsx";
+	            File archivoO = new File(rutaCompleta);
+	            if (archivoO.exists()) {
+	                archivo = archivoO;
+	                break;
+	            }
+	        }
+
+	        try (InputStream is = new FileInputStream(archivo);
+	             Workbook wb = WorkbookFactory.create(is)) {
+	            Sheet sheet = wb.getSheetAt(0);
+	            List<precios> listaPrecios = new ArrayList<>();
+	                
+	            for (int j = 11; j <= sheet.getLastRowNum(); j++) {
+	                // filas 12, 14, 16, 18... (indice13, 15, 17
+	                //salta si indic par
+	                if (j % 2 == 0) continue; 
+	                Row fila = sheet.getRow(j);
+	                if (fila == null) continue;
+
+	                String material= getCellValue(fila.getCell(4));
+	                String proveedor=getCellValue(fila.getCell(1));
+	                
+	                precios p = new precios();
+	                p.setProveedor(getCellValue(fila.getCell(1)));
+	                p.setMaterial(getCellValue(fila.getCell(4)));
+	                p.setPrecio(getCellValue(fila.getCell(6)));
+	                p.setMoneda(getCellValue(fila.getCell(7)));
+	                //p.setMaterialproveedor(material + proveedor);
+	                listaPrecios.add(p);
+
+	                if (listaPrecios.size() >= 500) {
+	                    preciosRepository.saveAll(listaPrecios);
+	                    listaPrecios.clear();
+	                }
+	            }
+	            if (!listaPrecios.isEmpty()) {
+	                preciosRepository.saveAll(listaPrecios);
+	            }
+	        } catch (Exception e) {
+	            System.err.println("Error al abrir " + archivo.getName() + ": " + e.getMessage());
+	        }
+	    }
 	}
 	        
 

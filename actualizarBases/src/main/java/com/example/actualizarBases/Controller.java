@@ -27,8 +27,9 @@ public class Controller {
         try {
             mService.actualizarProveedores();
             mService.actualizarDirectos();
+            mService.actualizarPrecios();
             //mService.actualizarPool();
-            respuesta.put("message", "Tablas (lista_proveedores, directos)  actualizadas con éxito");
+            respuesta.put("message", "Tablas (lista_proveedores, directos, precios)  actualizadas con éxito");
             return ResponseEntity.ok(respuesta);
         } catch (Exception e) {
             e.printStackTrace();

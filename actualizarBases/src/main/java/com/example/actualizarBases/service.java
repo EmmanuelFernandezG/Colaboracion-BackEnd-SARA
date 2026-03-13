@@ -189,13 +189,21 @@ public class service {
 	    List<pool> listaPool = new ArrayList<>();
 	    
 	    for (int i = 3; i <= sheet.getLastRowNum(); i++) {
-	        Row fila = sheet.getRow(i);
-	        if (fila == null) break;
+	    	
+	    	 try {
 
-	        String valorF = getCellValue(fila.getCell(5));
-	        String valorK = getCellValue(fila.getCell(10));
-	        if (valorF.isEmpty() || valorK.isEmpty()) break;
-	        
+	    	        Row fila = sheet.getRow(i);
+	    	        if (fila == null) {
+	    	            continue;
+	    	        }
+
+	    	        String valorF = getCellValue(fila.getCell(5));
+	    	        String valorK = getCellValue(fila.getCell(10));
+
+	    	        if (valorF.isEmpty() || valorK.isEmpty()) {
+	    	            continue;
+	    	        }
+
 	        pool p = new pool();
 	        
 	        p.setRecibidas_en_el_dia(getCellValue(fila.getCell(0)));
@@ -207,7 +215,6 @@ public class service {
 	        p.setUrgente(getCellValue(fila.getCell(6)));
 	        p.setIda(getCellValue(fila.getCell(7)));
 	        p.setStatus_de_liberacion(getCellValue(fila.getCell(8)));
-	        // limpiar espacios invisible s ChrW(&H200B)
 	        String comentarios = getCellValue(fila.getCell(9)).replace("\u200B", "");
 	        p.setComentarios(comentarios);
 	        p.setFecha_de_liberacion_rechazo(valorK);
@@ -217,6 +224,11 @@ public class service {
 	        p.setStatus_matriz_dias_transcurridos(getCellValue(fila.getCell(14)));
 	        
 	        listaPool.add(p);
+	        
+	    	 } catch (Exception e) {
+	    		 e.printStackTrace();
+	    	        continue;
+	    	 }
 	        if (listaPool.size() >= 500) {
 	            poolRepository.saveAll(listaPool);
 	            listaPool.clear();
@@ -410,15 +422,17 @@ public class service {
 	                Row fila = sheet.getRow(j);
 	                if (fila == null) continue;
 
-	                String material= getCellValue(fila.getCell(4));
-	                String proveedor=getCellValue(fila.getCell(1));
+	                String material= getCellValue(fila.getCell(5));
+	                String proveedor=getCellValue(fila.getCell(2));
+	                String precioT= getCellValue(fila.getCell(7));
 	                
 	                precios p = new precios();
-	                p.setProveedor(getCellValue(fila.getCell(1)));
-	                p.setMaterial(getCellValue(fila.getCell(4)));
-	                p.setPrecio(getCellValue(fila.getCell(6)));
-	                p.setMoneda(getCellValue(fila.getCell(7)));
-	                //p.setMaterialproveedor(material + proveedor);
+	                p.setProveedor(getCellValue(fila.getCell(2)));
+	                p.setMaterial(getCellValue(fila.getCell(5)));
+	                p.setMoneda(getCellValue(fila.getCell(8)));
+	                p.setMaterialproveedor(material + proveedor);
+	                p.setPrecio(new java.math.BigDecimal(precioT));
+	                //p.setPrecio(Double.parseDouble(precio));
 	                listaPrecios.add(p);
 
 	                if (listaPrecios.size() >= 500) {
@@ -458,7 +472,7 @@ public class service {
 	    try {//excel decimales
 	        return (int) Double.parseDouble(val);
 	    } catch (Exception e) {
-	        return 0; // ¿? 
+	        return 0; 
 	    }
 	}
 
@@ -481,20 +495,21 @@ public class service {
 	}*/
 	
 	private String getCellValue(Cell cell) {
-
 	    if (cell == null) return "";
-
 	    switch (cell.getCellType()) {
-
 	        case STRING:
 	            return cell.getStringCellValue().trim();
-
 	        case NUMERIC:
 	            if (DateUtil.isCellDateFormatted(cell)) {
 	                return cell.getLocalDateTimeCellValue().toLocalDate().toString();
 	            }
-	            return String.valueOf((long) cell.getNumericCellValue());
-
+	            double valor = cell.getNumericCellValue();
+	            java.math.BigDecimal bd = new java.math.BigDecimal(String.valueOf(valor));
+	            if (valor==(long) valor) {
+	                return String.valueOf((long) valor);
+	            } else {
+	                return bd.toPlainString();// cadena completa
+	            }
 	        case BOOLEAN:
 	            return String.valueOf(cell.getBooleanCellValue());
 

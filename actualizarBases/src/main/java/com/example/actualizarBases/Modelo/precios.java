@@ -1,5 +1,7 @@
 package com.example.actualizarBases.Modelo;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,8 +25,8 @@ public class precios {
 	private String material;
 	@Column(columnDefinition = "MEDIUMTEXT")
 	private String proveedor;
-	@Column(columnDefinition = "MEDIUMTEXT")
-	private String Precio;
+	@Column(name = "Precio", precision = 15, scale = 4)
+	private BigDecimal Precio;
 	private String moneda;
 	public Long getId() {
 		return Id;
@@ -50,10 +52,12 @@ public class precios {
 	public void setProveedor(String proveedor) {
 		this.proveedor = proveedor;
 	}
-	public String getPrecio() {
+	
+	
+	public BigDecimal getPrecio() {
 		return Precio;
 	}
-	public void setPrecio(String precio) {
+	public void setPrecio(BigDecimal precio) {
 		Precio = precio;
 	}
 	public String getMoneda() {

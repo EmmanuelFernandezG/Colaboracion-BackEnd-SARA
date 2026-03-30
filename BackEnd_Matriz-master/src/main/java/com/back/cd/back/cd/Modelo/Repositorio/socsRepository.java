@@ -26,11 +26,13 @@ public interface socsRepository extends JpaRepository<Soc_Modelo, Integer> {
             "s.fecha_de_emisionoc AS fechaEmision, " +
             "s.fecha_autorizacion_previa AS autorizacionPrevia, "+
             "s.fecha_de_emisionoc AS fechaInicial, " +
-            "s.observaciones AS observaciones " +
+            "s.fecha_de_reciboactrlpos AS reciboctrlpos , "+
+            "s.observaciones AS observaciones, " +
+            "s.envio_de_laocal_proveedoreoc AS enviada "+
             "FROM socs s " + 
             "LEFT JOIN contactos c ON s.unidad_de_negocio = c.unidad_de_negocio " +
             "LEFT JOIN lista_proveedores lp ON s.no_de_proveedor = lp.acreedor " +
-            "WHERE :usr = 'arramirezz' OR TRIM(s.asistentepos) = :usr", 
+            "WHERE :usuario = 'prueba' OR TRIM(s.asistentepos) = :usuario", 
             nativeQuery = true)
-    List<socsProjection> obtenerDataTabla(@Param("usr") String usuario);
+    List<socsProjection> obtenerDataTabla(@Param("usuario") String usuario);
 }

@@ -16,5 +16,7 @@ public interface socsProjection {
     String getFechaEmision();
     Date getAutorizacionPrevia();
     Date getFechaInicial();
+    Date getReciboctrlpos();
     String getObservaciones();
+    Date getEnviada();
 }

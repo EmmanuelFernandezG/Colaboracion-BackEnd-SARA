@@ -28,7 +28,7 @@ public class controller {
 	public List<socsProjection> getTabla(@RequestParam("usuario") String usuario) {
 		System.out.println(">>> Usuario recibido: [" + usuario + "]");
 	    
-	    if ("arramirezz".equalsIgnoreCase(usuario)) {
+	    if ("prueba".equalsIgnoreCase(usuario)) {
 	        return socsRepository.obtenerDataTabla(usuario);
 	    }
 	    

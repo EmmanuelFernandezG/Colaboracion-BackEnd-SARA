@@ -2,6 +2,7 @@ package com.back.cd.back.cd.Modelo;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,88 +11,85 @@ import javax.persistence.Table;
 @Table(name="socs_log")
 public class socs_log_modelo {
 	@Id
-	private Long noPo;
-	private LocalDate autorizacionPrevia;
-	private String comentariosDoc;
-	private LocalDate fefiPlan;
-	private String comentariosPlan;
-	private LocalDate fefCompras;
-	private String comentariosCompras;
-    private String numeroReimp;
-    private String comentariosReimp;
-    private String statusReimp;
-    private LocalDate fechaFinalPlan;
-    private LocalDate fechaFinalCompras;
-	public Long getNoPo() {
-		return noPo;
+	@Column(name = "nopo")
+	private Long nopo;
+	@Column(name = "autorizacion_previa")
+	private LocalDate autorizacion_previa;
+	@Column(name = "comentarios_doc")
+	private String comentarios_doc;
+	@Column(name = "fecha_final_plan")
+	private LocalDate fecha_final_plan;
+	
+	@Column(name = "comentarios_plan")
+	private String comentarios_plan;
+	@Column(name = "fecha_final_compras")
+	private LocalDate fecha_final_compras;
+	@Column(name = "comentarios_compras")
+	private String comentarios_compras;
+	@Column(name = "numero_reimp")
+    private String numero_reimp;
+	@Column(name = "comentarios_reimp")
+    private String comentarios_reimp;
+	@Column(name = "status_reimp")
+    private String status_reimp;
+	public Long getNopo() {
+		return nopo;
 	}
-	public void setNoPo(Long noPo) {
-		this.noPo = noPo;
+	public void setNopo(Long nopo) {
+		this.nopo = nopo;
 	}
-	public LocalDate getAutorizacionPrevia() {
-		return autorizacionPrevia;
+	public LocalDate getAutorizacion_previa() {
+		return autorizacion_previa;
 	}
-	public void setAutorizacionPrevia(LocalDate autorizacionPrevia) {
-		this.autorizacionPrevia = autorizacionPrevia;
+	public void setAutorizacion_previa(LocalDate autorizacion_previa) {
+		this.autorizacion_previa = autorizacion_previa;
 	}
-	public String getComentariosDoc() {
-		return comentariosDoc;
+	public String getComentarios_doc() {
+		return comentarios_doc;
 	}
-	public void setComentariosDoc(String comentariosDoc) {
-		this.comentariosDoc = comentariosDoc;
+	public void setComentarios_doc(String comentarios_doc) {
+		this.comentarios_doc = comentarios_doc;
 	}
-	public LocalDate getFefiPlan() {
-		return fefiPlan;
+	public LocalDate getFecha_final_plan() {
+		return fecha_final_plan;
 	}
-	public void setFefiPlan(LocalDate fefiPlan) {
-		this.fefiPlan = fefiPlan;
+	public void setFecha_final_plan(LocalDate fecha_final_plan) {
+		this.fecha_final_plan = fecha_final_plan;
 	}
-	public String getComentariosPlan() {
-		return comentariosPlan;
+	public String getComentarios_plan() {
+		return comentarios_plan;
 	}
-	public void setComentariosPlan(String comentariosPlan) {
-		this.comentariosPlan = comentariosPlan;
+	public void setComentarios_plan(String comentarios_plan) {
+		this.comentarios_plan = comentarios_plan;
 	}
-	public LocalDate getFefCompras() {
-		return fefCompras;
+	public LocalDate getFecha_final_compras() {
+		return fecha_final_compras;
 	}
-	public void setFefCompras(LocalDate fefCompras) {
-		this.fefCompras = fefCompras;
+	public void setFecha_final_compras(LocalDate fecha_final_compras) {
+		this.fecha_final_compras = fecha_final_compras;
 	}
-	public String getComentariosCompras() {
-		return comentariosCompras;
+	public String getComentarios_compras() {
+		return comentarios_compras;
 	}
-	public void setComentariosCompras(String comentariosCompras) {
-		this.comentariosCompras = comentariosCompras;
+	public void setComentarios_compras(String comentarios_compras) {
+		this.comentarios_compras = comentarios_compras;
 	}
-	public String getNumeroReimp() {
-		return numeroReimp;
+	public String getNumero_reimp() {
+		return numero_reimp;
 	}
-	public void setNumeroReimp(String numeroReimp) {
-		this.numeroReimp = numeroReimp;
+	public void setNumero_reimp(String numero_reimp) {
+		this.numero_reimp = numero_reimp;
 	}
-	public String getComentariosReimp() {
-		return comentariosReimp;
+	public String getComentarios_reimp() {
+		return comentarios_reimp;
 	}
-	public void setComentariosReimp(String comentariosReimp) {
-		this.comentariosReimp = comentariosReimp;
+	public void setComentarios_reimp(String comentarios_reimp) {
+		this.comentarios_reimp = comentarios_reimp;
 	}
-	public String getStatusReimp() {
-		return statusReimp;
+	public String getStatus_reimp() {
+		return status_reimp;
 	}
-	public void setStatusReimp(String statusReimp) {
-		this.statusReimp = statusReimp;
-	}
-	public LocalDate getFechaFinalPlan() {
-		return fechaFinalPlan;
-	}
-	public void setFechaFinalPlan(LocalDate fechaFinalPlan) {
-		this.fechaFinalPlan = fechaFinalPlan;
-	}
-	public LocalDate getFechaFinalCompras() {
-		return fechaFinalCompras;
-	}
-	public void setFechaFinalCompras(LocalDate fechaFinalCompras) {
-		this.fechaFinalCompras = fechaFinalCompras;
+	public void setStatus_reimp(String status_reimp) {
+		this.status_reimp = status_reimp;
 	}
 }
